@@ -1,7 +1,7 @@
 services:
   postgres-upgrade:
-    build: ./postgres-upgrade
-    # image: akoscomp/postgres-upgrade:18
+    # build: ./postgres-upgrade
+    image: akoscomp/postgres-upgrade:18
     container_name: postgres-upgrade
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -9,8 +9,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       TARGET_VERSION: ${POSTGRES_TARGET_VERSION}
     volumes:
-      - ./data/postgres-ep:/var/lib/postgresql/
-      - ./data/postgres-ep-old:/var/lib/postgresql/data_old:ro
+      - ./data/postgres:/var/lib/postgresql/
+      - ./data/postgres-old:/var/lib/postgresql/data_old:ro
 
   postgres:
     image: postgres:${POSTGRES_TARGET_VERSION}
@@ -20,8 +20,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - ./data/postgres-ep/data:/var/lib/postgresql/data
+      - ./data/postgres/data:/var/lib/postgresql/data
     depends_on:
       postgres-upgrade:
         condition: service_completed_successfully
-
